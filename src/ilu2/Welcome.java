@@ -1,15 +1,24 @@
 package ilu2;
 
+
 public class Welcome {
 
 	
 	public static String welcome(String input){
+		
 		StringBuilder chaine = new StringBuilder();
+		
+		//input = input.trim(); -> c'est pour plus tard
+		
+		
+		if((input == null)||(input.isBlank())){
+			 return "Hello, my friend";
+		}
 		
 		chaine.append("Hello, ");
 		chaine.append(ajoutMajuscule(input));
-
-		return chaine.toString();
+		
+		return chaine.toString() ;
 	
 	}
 	
