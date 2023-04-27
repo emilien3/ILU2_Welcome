@@ -16,11 +16,11 @@ public class Welcome {
 		for (int i = 0; i < tabNoms.length; i++) {
 			if (tabNoms[i].toUpperCase().equals(tabNoms[i])) {
 				chaineMaj.append(", ");
-				chaineMaj.append(tabNoms[i]);
+				chaineMaj.append(tabNoms[i].trim());
 			}
 			else {
 				chaineMin.append(", ");
-				chaineMin.append(ajoutMajuscule(tabNoms[i]));
+				chaineMin.append(ajoutMajuscule(tabNoms[i].trim()));
 			}
 		}
 		if (chaineMin.toString().isEmpty() ) {
