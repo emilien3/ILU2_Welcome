@@ -10,16 +10,20 @@ public class Welcome {
 		
 		//input = input.trim(); -> c'est pour plus tard
 		
-		
 		if((input == null)||(input.isBlank())){
 			 return "Hello, my friend";
 		}
 		
+		if (input.toUpperCase().equals(input)) {
+			chaine.append("HELLO, ");
+			chaine.append(input);
+			chaine.append(" !");
+			return chaine.toString();
+		}
+		
 		chaine.append("Hello, ");
 		chaine.append(ajoutMajuscule(input));
-		
 		return chaine.toString() ;
-	
 	}
 	
 	private static String ajoutMajuscule(String input) {	
