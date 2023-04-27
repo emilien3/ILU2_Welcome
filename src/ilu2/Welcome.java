@@ -32,7 +32,7 @@ public class Welcome {
 			chaine.append(", ");
 			chaine.append(ajoutMajuscule(tabNoms[i]));
 		}
-		System.out.println(chaine);
+		//System.out.println(chaine);
 		return chaine.toString() ;
 	}
 	

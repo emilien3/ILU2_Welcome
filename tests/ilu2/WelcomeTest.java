@@ -9,6 +9,8 @@ class WelcomeTest {
 	@Test
 	void testEX_1() {
 		assertEquals(Welcome.welcome("bob"), "Hello, Bob");
+		assertEquals(Welcome.welcome("Jean"), "Hello, Jean");
+		assertNotEquals(Welcome.welcome("bob"), "bob");
 	}
 	
 	@Test 
@@ -16,16 +18,25 @@ class WelcomeTest {
 		assertEquals(Welcome.welcome(""), "Hello, my friend");
 		assertEquals(Welcome.welcome(null), "Hello, my friend");
 		assertEquals(Welcome.welcome("  "), "Hello, my friend");
+		assertNotEquals(Welcome.welcome("  "), "Hello,   ");
 	}
 	
 	@Test
 	void testEX_3() {
 		assertEquals(Welcome.welcome("JERRY"), "HELLO, JERRY !");
+		assertNotEquals(Welcome.welcome("JEAN"), "Hello, JEAN !");
 	}
 	
 	@Test
 	void testEX_4() {
 		assertEquals(Welcome.welcome("amy,bob"), "Hello, Amy, Bob");
+		assertNotEquals(Welcome.welcome("amy,bob"), "Hello, Amy");
+	}
+	
+	@Test
+	void testEX_5() {
+		assertEquals(Welcome.welcome("amy,Bob,jean,Amine"), "Hello, Amy, Bob, Jean, Amine");
+		assertNotEquals(Welcome.welcome("amy,Bob,jean,Amine"), "Hello, Amy, Bob");
 	}
 	
 }
