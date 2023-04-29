@@ -16,29 +16,13 @@ public class Welcome {
 		String[] tNomsSansOcc = new String[tabNoms.length];
 		int[] tComptOcc = new int[tabNoms.length];
 		
+		boolean presenceYoda = false;
+		boolean presenceYODA = false;
+		
 		int nbPersonne = occurenceNoms(tabNoms, tNomsSansOcc, tComptOcc);
 		
-		for (int i = 0; i < nbPersonne; i++) {
-			
-			if (tNomsSansOcc[i].toUpperCase().equals(tNomsSansOcc[i])) {
-				chaineMaj.append(", ");
-				chaineMaj.append(tNomsSansOcc[i]);
-				chaineMaj.append(ajoutNbOcc(tComptOcc[i]));
-			}
-			else {
-				chaineMin.append(", ");
-				chaineMin.append(ajoutMajuscule(tNomsSansOcc[i]));
-				chaineMin.append(ajoutNbOcc(tComptOcc[i]));
-				
-			}
-		}
-		if (chaineMin.toString().isEmpty() ) {
-			return affichageMessage(chaineMaj.toString());
-		}
-		else if(chaineMaj.toString().isEmpty()) {
-			return affichageMessage(chaineMin.toString());
-		}
-		return affichageMessage(chaineMin.toString()) + ". AND " + affichageMessage(chaineMaj.toString());
+		return constructionMessage(chaineMin, chaineMaj, nbPersonne, tNomsSansOcc, tComptOcc, presenceYoda, presenceYODA);
+		
 	}
 	
 	
@@ -50,27 +34,53 @@ public class Welcome {
 	}
 	
 	
-	private static String affichageMessage(String input) {
+	private static String formatageMessage(String input, boolean presenceYoda, boolean presenceYODA) {
 		StringBuilder chaine = new StringBuilder();
 		
 		if(input.toUpperCase().equals(input)) {
 			if (occurenceChar(input, ',')>1) input = remplacementAND(input, true);
-			chaine.append("HELLO");
-			chaine.append(input);
+			
+			if (presenceYODA) {
+				input = input.substring(2);
+				chaine.append(input);
+				chaine.append(" HELLO");
+			}else {
+				chaine.append("HELLO");
+				chaine.append(input);
+			}
+			
 			chaine.append(" !");
 			return chaine.toString();
 		}
 		else {
 			if (occurenceChar(input, ',')>1) input = remplacementAND(input, false);
-			chaine.append("Hello");
-			chaine.append(input);
+			
+			if (presenceYoda) {
+				input = input.substring(2);
+				chaine.append(input);
+				chaine.append(" Hello");
+			}else {
+				chaine.append("Hello");
+				chaine.append(input);	
+			}
+			
 			return chaine.toString();
 		}
 	}
 	
+	private static String affichageMessage (String chaineMin, String chaineMaj, boolean presenceYoda, boolean presenceYODA) {
+		if (chaineMin.isEmpty() ) {
+			return formatageMessage(chaineMaj, presenceYoda, presenceYODA);
+		}
+		else if(chaineMaj.isEmpty()) {
+			return formatageMessage(chaineMin, presenceYoda, presenceYODA);
+		}
+		return formatageMessage(chaineMin, presenceYoda,presenceYODA) + ". AND " + formatageMessage(chaineMaj, presenceYoda, presenceYODA);
+		
+	}
+	
 	private static String[] recupNoms(String input) {
 		StringBuilder chaine = new StringBuilder();
-	    
 	    String[] tab = input.split(",");
 	    
 	    for (int i =0 ; i< tab.length; i++){
@@ -128,7 +138,6 @@ public class Welcome {
 	}
 	
 	private static String ajoutNbOcc(int occ) {
-		
 		if (occ>1){
 			return " (*"+occ+")";
 		}
@@ -137,5 +146,32 @@ public class Welcome {
 		}
 	}
 	
+	private static String constructionMessage(StringBuilder chaineMin, StringBuilder chaineMaj, int nbPersonne , String[] tNomsSansOcc,int[] tComptOcc, boolean presenceYoda, boolean presenceYODA) {
+		
+		for (int i = 0; i < nbPersonne; i++) {
+			if (tNomsSansOcc[i].toUpperCase().equals(tNomsSansOcc[i])) {
+				if(tNomsSansOcc[i].equals("YODA")) presenceYODA =true;
+				chaineMaj.append(", ");
+				chaineMaj.append(tNomsSansOcc[i]);
+				chaineMaj.append(ajoutNbOcc(tComptOcc[i]));
+			}
+			else {
+				chaineMin.append(", ");
+				if (ajoutMajuscule(tNomsSansOcc[i]).equals("Yoda")) presenceYoda = true;
+				chaineMin.append(ajoutMajuscule(tNomsSansOcc[i]));
+				chaineMin.append(ajoutNbOcc(tComptOcc[i]));
+				
+			}
+		}
+		return affichageMessage(chaineMin.toString(), chaineMaj.toString(), presenceYoda, presenceYODA);
+	}
+	
+	
 	
 }
+
+
+
+
+
+
