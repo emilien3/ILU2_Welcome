@@ -13,27 +13,31 @@ public class Welcome {
 		
 		String[] tabNoms = recupNoms(input);
 		
-		for (int i = 0; i < tabNoms.length; i++) {
-			if (tabNoms[i].toUpperCase().equals(tabNoms[i])) {
+		String[] tNomsSansOcc = new String[tabNoms.length];
+		int[] tComptOcc = new int[tabNoms.length];
+		
+		int nbPersonne = occurenceNoms(tabNoms, tNomsSansOcc, tComptOcc);
+		
+		for (int i = 0; i < nbPersonne; i++) {
+			
+			if (tNomsSansOcc[i].toUpperCase().equals(tNomsSansOcc[i])) {
 				chaineMaj.append(", ");
-				chaineMaj.append(tabNoms[i].trim());
+				chaineMaj.append(tNomsSansOcc[i]);
+				chaineMaj.append(ajoutNbOcc(tComptOcc[i]));
 			}
 			else {
 				chaineMin.append(", ");
-				chaineMin.append(ajoutMajuscule(tabNoms[i].trim()));
+				chaineMin.append(ajoutMajuscule(tNomsSansOcc[i]));
+				chaineMin.append(ajoutNbOcc(tComptOcc[i]));
+				
 			}
 		}
 		if (chaineMin.toString().isEmpty() ) {
-			//System.out.println(affichageMessage(chaineMaj.toString()));
 			return affichageMessage(chaineMaj.toString());
 		}
 		else if(chaineMaj.toString().isEmpty()) {
-			//System.out.println(affichageMessage(chaineMin.toString()));
 			return affichageMessage(chaineMin.toString());
 		}
-		//String message = affichageMessage(chaineMin.toString()) + ". AND " + affichageMessage(chaineMaj.toString());
-		//System.out.println(message);
-		
 		return affichageMessage(chaineMin.toString()) + ". AND " + affichageMessage(chaineMaj.toString());
 	}
 	
@@ -50,14 +54,14 @@ public class Welcome {
 		StringBuilder chaine = new StringBuilder();
 		
 		if(input.toUpperCase().equals(input)) {
-			if (occurence(input, ',')>1) input = remplacementAND(input, true);
+			if (occurenceChar(input, ',')>1) input = remplacementAND(input, true);
 			chaine.append("HELLO");
 			chaine.append(input);
 			chaine.append(" !");
 			return chaine.toString();
 		}
 		else {
-			if (occurence(input, ',')>1) input = remplacementAND(input, false);
+			if (occurenceChar(input, ',')>1) input = remplacementAND(input, false);
 			chaine.append("Hello");
 			chaine.append(input);
 			return chaine.toString();
@@ -65,10 +69,18 @@ public class Welcome {
 	}
 	
 	private static String[] recupNoms(String input) {
-		return input.split(",");	
+		StringBuilder chaine = new StringBuilder();
+	    
+	    String[] tab = input.split(",");
+	    
+	    for (int i =0 ; i< tab.length; i++){
+	        chaine.append(tab[i].trim()+",");
+	    }    
+
+	    return chaine.toString().split(",");	
 	}
 	
-	private static int occurence(String str, char car) {
+	private static int occurenceChar(String str, char car) {
 		int count = 0;
 	    for (int i = 0; i < str.length(); i++)
 	    {
@@ -86,5 +98,44 @@ public class Welcome {
 		}		
 		return chaine.substring(0, indice) + " and" + chaine.substring(indice + 1);
 	}
+	
+	
+	private static int existe(String tab[], String nom){
+		 for(int i = 0 ; i<tab.length;i++){
+			 if(nom.equals(tab[i])) return i;
+		 }
+		 return -1;
+	}
+	
+	private static int occurenceNoms(String[] input, String[] noms, int[] tCompt) {
+		int indice =0;
+		int indice2;
+		//init de tCompt;
+		for (int i =0 ; i<input.length; i++) {
+			tCompt[i] = 0;
+		}
+		for (int i = 0; i < input.length; i++) {
+			if ((indice2 = existe(noms, input[i])) !=-1) {
+				tCompt[indice2]++;
+			}
+			else {
+				noms[indice] = input[i];
+				tCompt[indice] ++;
+				indice++;
+			}
+		}
+		return indice;
+	}
+	
+	private static String ajoutNbOcc(int occ) {
+		
+		if (occ>1){
+			return " (*"+occ+")";
+		}
+		else{
+			return "";
+		}
+	}
+	
 	
 }
